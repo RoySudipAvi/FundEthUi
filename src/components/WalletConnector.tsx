@@ -10,6 +10,7 @@ const WalletConnector: React.FC = () => {
     const [fundAmount, setFundAmount] = useState<string>("")
     const [totalAmount, setTotalAmount] = useState<string | null>(null)
     const [isOwner, setIsOwner] = useState<boolean>(false)
+    const [totalFundedByThis, setTotalFundedByThis] = useState<string | null>(null)
     const connectMetaMask = async () => {
         if (window.ethereum) {
             if (window.ethereum.isMetaMask)
@@ -24,6 +25,7 @@ const WalletConnector: React.FC = () => {
                     const signer = await provider.getSigner();
                     const contractInstance = new ethers.Contract(contractAddress, contractABI, signer);
                     setContract(contractInstance);
+
                     const owner = await contractInstance.getOwner()
                     if (accounts[0].toLowerCase() === owner.toLowerCase()) {
                         setIsOwner(true)
@@ -80,6 +82,21 @@ const WalletConnector: React.FC = () => {
         }
     }
 
+    const getTotalFundedByThis = async () => {
+        if (contract) {
+            try {
+                const tx = await contract.checkAmountFundedByAddress(walletAddress)
+                setTotalFundedByThis(ethers.formatEther(tx))
+            }
+            catch (error) {
+                console.error(error)
+            }
+        }
+        else {
+            alert("connect to the contract")
+        }
+    }
+
 
     return (
         <div>
@@ -96,7 +113,9 @@ const WalletConnector: React.FC = () => {
                         <button onClick={FundMe}>Fund Me</button>
                     </div>
                     <button onClick={getTotalAmount}>Check Total Amount</button>
-                    {totalAmount && <p>Total Value: {totalAmount} Ether</p>}
+                    {totalAmount && <p>Total Amount: {totalAmount} Ether</p>}
+                    <button onClick={getTotalFundedByThis}>Amount Funded By Me</button>
+                    {totalFundedByThis && <p>Amount: {totalFundedByThis} Ether</p>}
                     {isOwner && <button onClick={withdraw}>Withdraw Fund</button>}
                 </>
 
