@@ -4,7 +4,7 @@ import WalletConnector from "./components/WalletConnector"
 
 function App() {
   return (
-    <div className="App">
+    <div className="app-container">
       <h1>Fund Me App</h1>
       <WalletConnector />
     </div>

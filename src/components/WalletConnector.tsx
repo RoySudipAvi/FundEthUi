@@ -103,33 +103,34 @@ const WalletConnector: React.FC = () => {
             {isConnected ? (
                 <>
                     <h3>Welcome, {walletAddress}</h3>
-                    <div>
+                    <div className="input-container">
                         <input
+                            className="input-box"
                             type="text"
                             placeholder="0.1 Ether"
                             value={fundAmount}
                             onChange={(e) => setFundAmount(e.target.value)} // Handle input change
                         />
-                        <button onClick={FundMe}>Fund Me</button>
+                        <button className="fund-button" onClick={FundMe}>Fund Me</button>
                     </div>
-                    <button onClick={getTotalAmount}>Check Total Amount</button>
+                    <button className="get-total-button" onClick={getTotalAmount}>Check Total Amount</button>
                     {totalAmount && <p>Total Amount: {totalAmount} Ether</p>}
-                    <button onClick={getTotalFundedByThis}>Amount Funded By Me</button>
+                    <button className="get-total-button" onClick={getTotalFundedByThis}>Amount Funded By Me</button>
                     {totalFundedByThis && <p>Amount: {totalFundedByThis} Ether</p>}
-                    {isOwner && <button onClick={withdraw}>Withdraw Fund</button>}
+                    {isOwner && <button className="withdraw-button" onClick={withdraw}>Withdraw Fund</button>}
                 </>
 
             ) : (
-                <button onClick={() => setIsPopUpOpen(true)}>Connect Wallet</button>
+                <button className="connect-button" onClick={() => setIsPopUpOpen(true)}>Connect Wallet</button>
             )
             }
             {
                 isPopUpOpen && (
                     <div style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", backgroundColor: "white", padding: "20px", border: "1px solid black", zIndex: 1000 }}>
                         <h2>Select Wallet</h2>
-                        <button onClick={connectMetaMask}>Connect MetaMask</button>
-                        <button onClick={connectRabby}>Connect Rabby Wallet</button>
-                        <button onClick={() => setIsPopUpOpen(false)}>Close</button>
+                        <button className="wallet-button" onClick={connectMetaMask}>Connect MetaMask</button>
+                        <button className="wallet-button" onClick={connectRabby}>Connect Rabby Wallet</button>
+                        <button className="close-popup" onClick={() => setIsPopUpOpen(false)}>Close</button>
                     </div>
                 )
             }
